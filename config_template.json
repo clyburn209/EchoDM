@@ -1,0 +1,6 @@
+{
+  "openai_key": "sk-...",
+  "avrae_token": "Bot YOUR_AVRAE_DISCORD_BOT_TOKEN",
+  "character_url": "https://ddb.ac/characters/your-character-id",
+  "owlbear_url": "https://owlbear.rodeo/room-code"
+}
