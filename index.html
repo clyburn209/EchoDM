@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EchoDM</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="setup-panel">
+            <h2>Setup</h2>
+            <ul>
+                <li><a href="{{ character_url }}" target="_blank">Character Sheet</a></li>
+                <li><a href="{{ owlbear_url }}" target="_blank">Owlbear Map</a></li>
+            </ul>
+        </div>
+
+        <div class="character-box">
+            <h2>Character Info</h2>
+            <p>(Eventually: parsed summary from D&D Beyond link)</p>
+        </div>
+
+        <div class="map-box">
+            <iframe src="{{ owlbear_url }}" width="100%" height="100%" frameborder="0"></iframe>
+        </div>
+
+        <div class="chat-box">
+            <div id="chatlog"></div>
+            <textarea id="userInput" placeholder="Say something..."></textarea>
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        async function sendMessage() {
+            const input = document.getElementById("userInput").value;
+            const chatlog = document.getElementById("chatlog");
+            chatlog.innerHTML += `<div class="user"><strong>You:</strong> ${input}</div>`;
+
+            const response = await fetch("/chat", {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: input })
+            });
+
+            const data = await response.json();
+            chatlog.innerHTML += `<div class="dm"><strong>EchoDM:</strong> ${data.reply}</div>`;
+            document.getElementById("userInput").value = "";
+            chatlog.scrollTop = chatlog.scrollHeight;
+        }
+    </script>
+</body>
+</html>
